@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دریافت کانفیگ VPN هوشمند</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --mtcole-primary: #667eea;
+            --mtcole-secondary: #764ba2;
+            --mtcole-accent: #f093fb;
+            --mtcole-danger: #f5576c;
+            --mtcole-success: #22c55e;
+            --mtcole-warning: #fbbf24;
+            --mtcole-bg-dark: #0f0c29;
+            --mtcole-card-bg: rgba(255, 255, 255, 0.05);
+            --mtcole-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--mtcole-bg-dark) 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* MTcole Animated background particles */
+        .mtcole-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .mtcole-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: mtcoleFloat linear infinite;
+        }
+
+        @keyframes mtcoleFloat {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* MTcole Glow orbs */
+        .mtcole-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: mtcoleOrbFloat 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .mtcole-orb-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--mtcole-primary) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .mtcole-orb-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--mtcole-secondary) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            animation-delay: -7s;
+        }
+
+        .mtcole-orb-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--mtcole-accent) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+        }
+
+        @keyframes mtcoleOrbFloat {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        /* Main card */
+        .mtcole-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 520px;
+            margin: 40px 0;
+        }
+
+        .mtcole-card {
+            background: var(--mtcole-card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--mtcole-border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        0 0 100px rgba(102, 126, 234, 0.1);
+            animation: mtcoleCardAppear 0.8s ease-out;
+        }
+
+        @keyframes mtcoleCardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* MTcole Logo */
+        .mtcole-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--mtcole-primary) 0%, var(--mtcole-secondary) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            animation: mtcolePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes mtcolePulse {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 40px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        .mtcole-logo svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        h1 {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .mtcole-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        /* Status indicator */
+        .mtcole-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #4ade80;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .mtcole-status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: mtcoleBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes mtcoleBlink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        /* Feature list */
+        .mtcole-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .mtcole-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 14px 18px;
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .mtcole-feature:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(-5px);
+        }
+
+        .mtcole-feature-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--mtcole-primary) 0%, var(--mtcole-secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .mtcole-feature-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
+        /* Download button */
+        .mtcole-btn-download {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--mtcole-primary) 0%, var(--mtcole-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mtcole-btn-download::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .mtcole-btn-download:hover::before {
+            left: 100%;
+        }
+
+        .mtcole-btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .mtcole-btn-download:active {
+            transform: translateY(0);
+        }
+
+        /* MTcole Selection Sections */
+        .mtcole-selection-section {
+            display: none;
+            animation: mtcoleFadeIn 0.5s ease;
+            margin-bottom: 20px;
+        }
+
+        .mtcole-selection-section.show {
+            display: block;
+        }
+
+        @keyframes mtcoleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mtcole-section-title {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .mtcole-section-title svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--mtcole-warning);
+        }
+
+        .mtcole-options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mtcole-option-btn {
+            padding: 14px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mtcole-option-btn:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: var(--mtcole-primary);
+            transform: translateY(-2px);
+        }
+
+        .mtcole-option-btn.selected {
+            background: linear-gradient(135deg, var(--mtcole-primary) 0%, var(--mtcole-secondary) 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .mtcole-option-btn .mtcole-price {
+            display: block;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        .mtcole-option-btn.selected .mtcole-price {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* MTcole Summary Box */
+        .mtcole-summary {
+            display: none;
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
+            animation: mtcoleFadeIn 0.4s ease;
+        }
+
+        .mtcole-summary.show {
+            display: block;
+        }
+
+        .mtcole-summary-title {
+            color: var(--mtcole-primary);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .mtcole-summary-row {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mtcole-summary-row:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Alert message */
+        .mtcole-alert {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            animation: mtcoleAlertShake 0.5s ease;
+        }
+
+        .mtcole-alert.show {
+            display: block;
+        }
+
+        @keyframes mtcoleAlertShake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-10px);
+            }
+            40% {
+                transform: translateX(10px);
+            }
+            60% {
+                transform: translateX(-5px);
+            }
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* Signup section */
+        .mtcole-signup-section {
+            display: none;
+            animation: mtcoleFadeIn 0.5s ease;
+        }
+
+        .mtcole-signup-section.show {
+            display: block;
+        }
+
+        .mtcole-urgency-text {
+            color: var(--mtcole-warning);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .mtcole-urgency-text svg {
+            width: 16px;
+            height: 16px;
+            fill: var(--mtcole-warning);
+            animation: mtcoleFirePulse 1s ease-in-out infinite;
+        }
+
+        @keyframes mtcoleFirePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        .mtcole-btn-signup {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--mtcole-accent) 0%, var(--mtcole-danger) 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .mtcole-btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.5);
+        }
+
+        /* MTcole Progress Steps */
+        .mtcole-steps {
+            display: none;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .mtcole-steps.show {
+            display: flex;
+        }
+
+        .mtcole-step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .mtcole-step.active {
+            background: linear-gradient(135deg, var(--mtcole-primary) 0%, var(--mtcole-secondary) 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .mtcole-step.completed {
+            background: var(--mtcole-success);
+            border-color: var(--mtcole-success);
+            color: white;
+        }
+
+        .mtcole-step-line {
+            width: 30px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            align-self: center;
+            transition: all 0.3s ease;
+        }
+
+        .mtcole-step-line.completed {
+            background: var(--mtcole-success);
+        }
+
+        /* Footer */
+        .mtcole-footer {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Back button */
+        .mtcole-btn-back {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .mtcole-btn-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .mtcole-card {
+                padding: 28px 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .mtcole-options-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .mtcole-option-btn {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- MTcole Background Effects -->
+    <div class="mtcole-particles" id="mtcoleParticles"></div>
+    <div class="mtcole-orb mtcole-orb-1"></div>
+    <div class="mtcole-orb mtcole-orb-2"></div>
+    <div class="mtcole-orb mtcole-orb-3"></div>
+
+    <!-- Main Card -->
+    <div class="mtcole-container">
+        <div class="mtcole-card">
+            <!-- MTcole Logo -->
+            <div class="mtcole-logo">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+            </div>
+
+            <h1>کانفیگ VPN پرسرعت</h1>
+            <p class="mtcole-subtitle">دسترسی امن و سریع به اینترنت بدون محدودیت</p>
+
+            <div class="mtcole-status">
+                <span class="mtcole-status-dot"></span>
+                <span>سرورها فعال و آماده</span>
+            </div>
+
+            <!-- MTcole Progress Steps -->
+            <div class="mtcole-steps" id="mtcoleSteps">
+                <div class="mtcole-step active" id="mtcoleStep1">۱</div>
+                <div class="mtcole-step-line" id="mtcoleLine1"></div>
+                <div class="mtcole-step" id="mtcoleStep2">۲</div>
+                <div class="mtcole-step-line" id="mtcoleLine2"></div>
+                <div class="mtcole-step" id="mtcoleStep3">۳</div>
+            </div>
+
+            <!-- Main Features (Initial View) -->
+            <div id="mtcoleMainView">
+                <div class="mtcole-features">
+                    <div class="mtcole-feature">
+                        <div class="mtcole-feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <span>سرورهای اختصاصی با پینگ پایین</span>
+                    </div>
+                    <div class="mtcole-feature">
+                        <div class="mtcole-feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                        </div>
+                        <span>رمزنگاری سرتاسری اطلاعات</span>
+                    </div>
+                    <div class="mtcole-feature">
+                        <div class="mtcole-feature-icon">
+                            <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                        </div>
+                        <span>بدون قطعی و با Stability 99.9%</span>
+                    </div>
+                </div>
+
+                <button class="mtcole-btn-download" id="mtcoleDownloadBtn" onclick="mtcoleStartSelection()">
+                    دریافت کانفیگ
+                </button>
+            </div>
+
+            <!-- MTcole Traffic Selection -->
+            <div class="mtcole-selection-section" id="mtcoleTrafficSection">
+                <button class="mtcole-btn-back" onclick="mtcoleGoBack()">← بازگشت</button>
+
+                <div class="mtcole-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                    حجم مورد نظر را انتخاب کنید
+                </div>
+
+                <div class="mtcole-options-grid">
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectTraffic(1, '۱ گیگابایت', 0)">
+                        ۱ گیگابایت
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectTraffic(2, '۲ گیگابایت', 0)">
+                        ۲ گیگابایت
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectTraffic(3, '۳ گیگابایت', 0)">
+                        ۳ گیگابایت
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectTraffic(5, '۵ گیگابایت', 0)">
+                        ۵ گیگابایت
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MTcole Duration Selection -->
+            <div class="mtcole-selection-section" id="mtcoleDurationSection">
+                <button class="mtcole-btn-back" onclick="mtcoleGoBackToTraffic()">← بازگشت</button>
+
+                <div class="mtcole-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                    مدت زمان را انتخاب کنید
+                </div>
+
+                <div class="mtcole-options-grid">
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectDuration(1, '۱ روزه', 0)">
+                        ۱ روزه
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectDuration(6, '۶ روزه', 0)">
+                        ۶ روزه
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectDuration(30, '۳۰ روزه', 0)">
+                        ۳۰ روزه
+                        <span class="mtcole-price">رایگان</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MTcole Location Selection -->
+            <div class="mtcole-selection-section" id="mtcoleLocationSection">
+                <button class="mtcole-btn-back" onclick="mtcoleGoBackToDuration()">← بازگشت</button>
+
+                <div class="mtcole-section-title">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    موقعیت سرور را انتخاب کنید
+                </div>
+
+                <div class="mtcole-options-grid">
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectLocation('germany', 'آلمان 🇩🇪', 'پینگ: ۸۵ms')">
+                        آلمان 🇩🇪
+                        <span class="mtcole-price">پینگ: ۸۵ms</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectLocation('netherlands', 'هلند 🇳🇱', 'پینگ: ۹۲ms')">
+                        هلند 🇳🇱
+                        <span class="mtcole-price">پینگ: ۹۲ms</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectLocation('turkey', 'ترکیه 🇹🇷', 'پینگ: ۴۵ms')">
+                        ترکیه 🇹🇷
+                        <span class="mtcole-price">پینگ: ۴۵ms</span>
+                    </button>
+                    <button class="mtcole-option-btn" onclick="mtcoleSelectLocation('uae', 'امارات 🇦🇪', 'پینگ: ۱۲۰ms')">
+                        امارات 🇦🇪
+                        <span class="mtcole-price">پینگ: ۱۲۰ms</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MTcole Summary -->
+            <div class="mtcole-summary" id="mtcoleSummary">
+                <div class="mtcole-summary-title">📋 خلاصه سفارش شما</div>
+                <div class="mtcole-summary-row">
+                    <span>حجم ترافیک:</span>
+                    <span id="mtcoleSummaryTraffic">-</span>
+                </div>
+                <div class="mtcole-summary-row">
+                    <span>مدت زمان:</span>
+                    <span id="mtcoleSummaryDuration">-</span>
+                </div>
+                <div class="mtcole-summary-row">
+                    <span>موقعیت سرور:</span>
+                    <span id="mtcoleSummaryLocation">-</span>
+                </div>
+                <div class="mtcole-summary-row">
+                    <span>قیمت کل:</span>
+                    <span id="mtcoleSummaryPrice">-</span>
+                </div>
+            </div>
+
+            <!-- MTcole Alert -->
+            <div class="mtcole-alert" id="mtcoleAlertBox">
+                ❌ شما هنوز ثبت‌نام نکرده‌اید! برای دریافت کانفیگ باید ابتدا ثبت‌نام کنید.
+            </div>
+
+            <!-- MTcole Signup Section -->
+            <div class="mtcole-signup-section" id="mtcoleSignupSection">
+                <div class="mtcole-urgency-text">
+                    <svg viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+                    فرصت ثبت‌نام رایگان فقط امروز!
+                </div>
+                <a href="https://milli.gold/app/sign-up?referralCode=milli-cogfi" class="mtcole-btn-signup" id="mtcoleSignupLink">
+                    ثبت‌نام کنید
+                </a>
+            </div>
+        </div>
+
+        <p class="mtcole-footer">
+            © 2026 - تمامی حقوق محفوظ است
+        </p>
+    </div>
+
+    <script>
+        // ======================
+        // MTcole Internal Variables
+        // ======================
+        const mtcoleBrand = "MTcole";
+        const mtcoleVersion = "2.0";
+        let mtcoleSelectedTraffic = null;
+        let mtcoleSelectedTrafficName = "";
+        let mtcoleSelectedTrafficPrice = 0;
+        let mtcoleSelectedDuration = null;
+        let mtcoleSelectedDurationName = "";
+        let mtcoleSelectedDurationDiscount = 0;
+        let mtcoleSelectedLocation = null;
+        let mtcoleSelectedLocationName = "";
+        let mtcoleCurrentStep = 1;
+
+        // Create floating particles - MTcole Style
+        const mtcoleParticlesContainer = document.getElementById('mtcoleParticles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'mtcole-particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            particle.style.animationDelay = (Math.random() * 15) + 's';
+            particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+            mtcoleParticlesContainer.appendChild(particle);
+        }
+
+        // ======================
+        // MTcole Navigation Functions
+        // ======================
+
+        function mtcoleStartSelection() {
+            document.getElementById('mtcoleMainView').style.display = 'none';
+            document.getElementById('mtcoleTrafficSection').classList.add('show');
+            document.getElementById('mtcoleSteps').classList.add('show');
+            mtcoleUpdateSteps(1);
+        }
+
+        function mtcoleSelectTraffic(traffic, name, price) {
+            mtcoleSelectedTraffic = traffic;
+            mtcoleSelectedTrafficName = name;
+            mtcoleSelectedTrafficPrice = price;
+            mtcoleCurrentStep = 2;
+
+            document.querySelectorAll('#mtcoleTrafficSection .mtcole-option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.closest('.mtcole-option-btn').classList.add('selected');
+
+            setTimeout(() => {
+                document.getElementById('mtcoleTrafficSection').classList.remove('show');
+                document.getElementById('mtcoleDurationSection').classList.add('show');
+                mtcoleUpdateSteps(2);
+            }, 400);
+        }
+
+        function mtcoleSelectDuration(days, name, discount) {
+            mtcoleSelectedDuration = days;
+            mtcoleSelectedDurationName = name;
+            mtcoleSelectedDurationDiscount = discount;
+            mtcoleCurrentStep = 3;
+
+            document.querySelectorAll('#mtcoleDurationSection .mtcole-option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.closest('.mtcole-option-btn').classList.add('selected');
+
+            setTimeout(() => {
+                document.getElementById('mtcoleDurationSection').classList.remove('show');
+                document.getElementById('mtcoleLocationSection').classList.add('show');
+                mtcoleUpdateSteps(3);
+            }, 400);
+        }
+
+        function mtcoleSelectLocation(location, name, ping) {
+            mtcoleSelectedLocation = location;
+            mtcoleSelectedLocationName = name;
+
+            document.querySelectorAll('#mtcoleLocationSection .mtcole-option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.closest('.mtcole-option-btn').classList.add('selected');
+
+            let finalPrice = mtcoleSelectedTrafficPrice;
+            if (mtcoleSelectedDurationDiscount > 0) {
+                finalPrice = finalPrice - (finalPrice * mtcoleSelectedDurationDiscount / 100);
+            }
+
+            document.getElementById('mtcoleSummaryTraffic').textContent = mtcoleSelectedTrafficName;
+            document.getElementById('mtcoleSummaryDuration').textContent = mtcoleSelectedDurationName + 
+                (mtcoleSelectedDurationDiscount > 0 ? ` (${mtcoleSelectedDurationDiscount}٪ تخفیف)` : '');
+            document.getElementById('mtcoleSummaryLocation').textContent = mtcoleSelectedLocationName;
+            document.getElementById('mtcoleSummaryPrice').textContent = finalPrice.toLocaleString('fa-IR') + ' تومان';
+
+            document.getElementById('mtcoleSummary').classList.add('show');
+
+            setTimeout(() => {
+                mtcoleShowSignupRequired();
+            }, 1500);
+        }
+
+        function mtcoleShowSignupRequired() {
+            const alertBox = document.getElementById('mtcoleAlertBox');
+            const signupSection = document.getElementById('mtcoleSignupSection');
+
+            alertBox.classList.add('show');
+            signupSection.classList.add('show');
+
+            setTimeout(() => {
+                signupSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        // ======================
+        // MTcole Step Management
+        // ======================
+
+        function mtcoleUpdateSteps(step) {
+            const step1 = document.getElementById('mtcoleStep1');
+            const step2 = document.getElementById('mtcoleStep2');
+            const step3 = document.getElementById('mtcoleStep3');
+            const line1 = document.getElementById('mtcoleLine1');
+            const line2 = document.getElementById('mtcoleLine2');
+
+            step1.className = 'mtcole-step';
+            step2.className = 'mtcole-step';
+            step3.className = 'mtcole-step';
+            line1.className = 'mtcole-step-line';
+            line2.className = 'mtcole-step-line';
+
+            if (step >= 1) {
+                step1.classList.add('completed');
+            }
+            if (step >= 2) {
+                line1.classList.add('completed');
+                step2.classList.add('active');
+            } else {
+                step1.classList.add('active');
+            }
+            if (step >= 3) {
+                line2.classList.add('completed');
+                step2.classList.remove('active');
+                step2.classList.add('completed');
+                step3.classList.add('active');
+            }
+        }
+
+        // ======================
+        // MTcole Back Navigation
+        // ======================
+
+        function mtcoleGoBack() {
+            document.getElementById('mtcoleTrafficSection').classList.remove('show');
+            document.getElementById('mtcoleMainView').style.display = 'block';
+            document.getElementById('mtcoleSteps').classList.remove('show');
+            mtcoleResetSelection();
+        }
+
+        function mtcoleGoBackToTraffic() {
+            document.getElementById('mtcoleDurationSection').classList.remove('show');
+            document.getElementById('mtcoleTrafficSection').classList.add('show');
+            mtcoleUpdateSteps(1);
+            mtcoleCurrentStep = 1;
+        }
+
+        function mtcoleGoBackToDuration() {
+            document.getElementById('mtcoleLocationSection').classList.remove('show');
+            document.getElementById('mtcoleDurationSection').classList.add('show');
+            document.getElementById('mtcoleSummary').classList.remove('show');
+            document.getElementById('mtcoleAlertBox').classList.remove('show');
+            document.getElementById('mtcoleSignupSection').classList.remove('show');
+            mtcoleUpdateSteps(2);
+            mtcoleCurrentStep = 2;
+        }
+
+        function mtcoleResetSelection() {
+            mtcoleSelectedTraffic = null;
+            mtcoleSelectedTrafficName = "";
+            mtcoleSelectedTrafficPrice = 0;
+            mtcoleSelectedDuration = null;
+            mtcoleSelectedDurationName = "";
+            mtcoleSelectedDurationDiscount = 0;
+            mtcoleSelectedLocation = null;
+            mtcoleSelectedLocationName = "";
+            mtcoleCurrentStep = 1;
+
+            document.querySelectorAll('.mtcole-option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('mtcoleSummary').classList.remove('show');
+            document.getElementById('mtcoleAlertBox').classList.remove('show');
+            document.getElementById('mtcoleSignupSection').classList.remove('show');
+        }
+
+        // MTcole Console Branding (Internal)
+        console.log(`%c🚀 ${mtcoleBrand} VPN Configurator v${mtcoleVersion}`, 'color: #667eea; font-size: 16px; font-weight: bold;');
+        console.log('%cPowered by MTcole Network', 'color: #764ba2; font-size: 12px;');
+    </script>
+</body>
+</html>
